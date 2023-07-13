@@ -72,10 +72,6 @@ export function Calendar(): JSX.Element {
     arrayOfDate.push({ date: firstDateOfMonth.date(i), currentMonth: false });
   }
 
-  // console.log('arrayOfDate: ', arrayOfDate);
-
-  // return arrayOfDate;
-
   return (
     <div className='flex w-1/2 mx-auto  h-screen justify-center items-center  flex-col'>
       <div className='flex w-96 justify-between items-center space-x-8 border-b pb-3'>
