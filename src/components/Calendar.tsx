@@ -15,6 +15,8 @@ interface Props {
 
 interface SelectedDate {
   index: number | null;
+  year: number | null;
+  month: number | null;
   day: number | null;
 }
 
@@ -28,15 +30,17 @@ export function Calendar({ onChange }: Props): JSX.Element {
   const [year, setYear] = useState(dayjs().year()) // 2023
   const [selectedDate, setSelectedDate] = useState<SelectedDate>({
     index: null,
+    year: year,
+    month: month + 1,
     day: null,
   })
 
   useEffect(() => {
-    onChange(`${dayjs().format(`${year}-${month + 1}-${selectedDate.day ?? dayjs().format('DD')}`)}`)
+    onChange(`${dayjs().format(`${selectedDate.year}-${(selectedDate.month) <= 9 ? '0' : ''}${selectedDate.month}-${selectedDate.day ?? dayjs().format('DD')}`)}`)
   }, [selectedDate])
 
-  const handleClick = (index: number, day: number) => {
-    setSelectedDate({ index, day })
+  const handleClick = (index: number, year: number, month: number, day: number) => {
+    setSelectedDate({ index, year, month, day })
   }
 
   if (month === 12) {
@@ -124,7 +128,7 @@ export function Calendar({ onChange }: Props): JSX.Element {
                     currentMonth ? 'text-gray-950' : 'opacity-20',
                     today ? 'bg-blue-500 text-white' : '',
                     'h-10 w-10 grid place-content-center rounded-full hover:bg-blue-800 hover:text-white transition-all cursor-pointer')}
-                  onClick={() => handleClick(i, date.$D)}
+                  onClick={() => handleClick(i, date.$y, date.$M + 1, date.$D)}
                 >
                   {date.date()}
                 </h1>

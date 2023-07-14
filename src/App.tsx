@@ -3,7 +3,7 @@ import { useState } from 'react';
 import dayjs from 'dayjs';
 
 function App() {
-  const [dataString, setDateString] = useState<`${string}-${string}-${string}`>(`${dayjs().year()}-${dayjs().format('M')}-${dayjs().format('DD')}`)
+  const [dataString, setDateString] = useState<`${string}-${string}-${string}`>(`${dayjs().year()}-${dayjs().format('MM')}-${dayjs().format('DD')}`)
   // keep it here
   console.log('dataString: ', dataString) //
 
