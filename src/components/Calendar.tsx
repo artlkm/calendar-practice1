@@ -16,7 +16,7 @@ interface Props {
 interface SelectedDate {
   index: number | null;
   year: number | null;
-  month: number | null;
+  monthCurr: number | null;
   day: number | null;
 }
 
@@ -31,16 +31,18 @@ export function Calendar({ onChange }: Props): JSX.Element {
   const [selectedDate, setSelectedDate] = useState<SelectedDate>({
     index: null,
     year: year,
-    month: month + 1,
+    monthCurr: month + 1,
     day: null,
   })
 
   useEffect(() => {
-    onChange(`${dayjs().format(`${selectedDate.year}-${(selectedDate.month) <= 9 ? '0' : ''}${selectedDate.month}-${selectedDate.day ?? dayjs().format('DD')}`)}`)
+    onChange(`${dayjs().format(`${selectedDate.year}-${(selectedDate.monthCurr) <= 9 ? '0' : ''}${selectedDate.monthCurr}-${selectedDate.day ?? dayjs().format('DD')}`)}`)
   }, [selectedDate])
 
-  const handleClick = (index: number, year: number, month: number, day: number) => {
-    setSelectedDate({ index, year, month, day })
+  const handleClick = (index: number, year: number, monthCurr: number, day: number) => {
+    if (monthCurr === (month + 1)) {
+      setSelectedDate({ index, year, monthCurr, day })
+    }
   }
 
   if (month === 12) {
@@ -100,6 +102,9 @@ export function Calendar({ onChange }: Props): JSX.Element {
     arrayOfDate.push({ date: firstDateOfMonth.date(i), currentMonth: false });
   }
 
+  console.log('arrayOfDate: ', arrayOfDate);
+
+
 
   return (
     <div className='flex w-1/2 mx-auto  h-screen justify-center items-center  flex-col'>
@@ -124,7 +129,7 @@ export function Calendar({ onChange }: Props): JSX.Element {
               <div key={i} className='h-14 border-t grid place-content-center text-sm '>
                 <h1
                   className={cn(
-                    selectedDate.index === i && selectedDate.month === month + 1 ? 'bg-blue-800 text-white' : '',
+                    selectedDate.index === i && selectedDate.monthCurr === month + 1 ? 'bg-blue-800 text-white' : '',
                     currentMonth ? 'text-gray-950' : 'opacity-20',
                     today ? 'bg-blue-500 text-white' : '',
                     'h-10 w-10 grid place-content-center rounded-full hover:bg-blue-800 hover:text-white transition-all cursor-pointer')}
