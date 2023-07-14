@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import cn from '../utils/cn';
 
 interface arrayOfDate {
@@ -18,15 +18,17 @@ const months = [
   "August", "September", "October", "November", "December"
 ]
 
-
 export function Calendar({ onChange }: Props): JSX.Element {
   const [month, setMonth] = useState(dayjs().month())
   const [year, setYear] = useState(dayjs().year()) // 2023
   const [selectedItems, setSelectedItem] = useState<number | null>(null)
 
+  useEffect(() => {
+    onChange(`Current data: ${dayjs().format('YYYY-MM-DD')} | Selected Month: ${months[month]}`)
+  }, [month])
+
   const handleClick = (index: number) => {
     setSelectedItem(index)
-    onChange('test')
   }
 
   if (month === 12) {
