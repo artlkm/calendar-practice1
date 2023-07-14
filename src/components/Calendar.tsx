@@ -124,7 +124,7 @@ export function Calendar({ onChange }: Props): JSX.Element {
               <div key={i} className='h-14 border-t grid place-content-center text-sm '>
                 <h1
                   className={cn(
-                    selectedDate.index === i ? 'bg-blue-800 text-white' : '',
+                    selectedDate.index === i && selectedDate.month === month + 1 ? 'bg-blue-800 text-white' : '',
                     currentMonth ? 'text-gray-950' : 'opacity-20',
                     today ? 'bg-blue-500 text-white' : '',
                     'h-10 w-10 grid place-content-center rounded-full hover:bg-blue-800 hover:text-white transition-all cursor-pointer')}
