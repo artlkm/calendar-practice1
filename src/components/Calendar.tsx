@@ -102,9 +102,6 @@ export function Calendar({ onChange }: Props): JSX.Element {
     arrayOfDate.push({ date: firstDateOfMonth.date(i), currentMonth: false });
   }
 
-  console.log('arrayOfDate: ', arrayOfDate);
-
-
 
   return (
     <div className='flex w-1/2 mx-auto  h-screen justify-center items-center  flex-col'>
