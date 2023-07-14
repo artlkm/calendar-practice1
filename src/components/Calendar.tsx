@@ -1,9 +1,17 @@
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import cn from '../utils/cn';
-// import { FaApple } from 'react-icons/all'
-import { FaAngleLeft } from "@react-icons/all-files/fa/FaBeer";
 
+interface arrayOfDate {
+  currentMonth: boolean;
+  date: string | dayjs.Dayjs;
+  today?: boolean;
+}
+
+interface Props {
+  onChange: (x: string) => void;
+  value?: string;
+}
 
 const months = [
   "January", "February", "March", "April", "May", "June", "July",
@@ -11,12 +19,25 @@ const months = [
 ]
 
 
-export function Calendar(): JSX.Element {
-
+export function Calendar({ onChange }: Props): JSX.Element {
   const [month, setMonth] = useState(dayjs().month())
-  const [year, setYear] = useState(dayjs().year())
+  const [year, setYear] = useState(dayjs().year()) // 2023
+  const [selectedItems, setSelectedItem] = useState<number | null>(null)
 
-  console.log(dayjs().month().toLocaleString());
+  const handleClick = (index: number) => {
+    setSelectedItem(index)
+    onChange('test')
+  }
+
+  if (month === 12) {
+    setMonth(0)
+    setYear(prev => prev + 1)
+  }
+
+  if (month === -1) {
+    setMonth(11)
+    setYear(prev => prev - 1)
+  }
 
 
   function onPrevMonth() {
@@ -31,14 +52,8 @@ export function Calendar(): JSX.Element {
   const lastDateOfMonth = dayjs().year(year).month(month).endOf('month');
   const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 
-  console.log(
-    dayjs()
-      .year(year)
-      .month(month - 1)
-      .startOf('month')
-  );
+  const arrayOfDate: arrayOfDate[] = [];
 
-  const arrayOfDate = [];
 
   // create prefix date, they'll be hidden
   for (let i = 0; i < firstDateOfMonth.day(); i++) {
@@ -58,7 +73,6 @@ export function Calendar(): JSX.Element {
     });
   }
 
-  // console.log('arrayOfDate.length: ', arrayOfDate.length);
 
   // remaining days of the prev month and next
   // there is bug with it
@@ -80,6 +94,7 @@ export function Calendar(): JSX.Element {
         <button onClick={onNextMonth} className='h-10 w-10 grid place-content-center rounded-full hover:bg-blue-500 hover:text-white transition-all cursor-pointer'>&gt;</button>
       </div>
       <div className='w-96 h-96 '>
+        {/* DAYS OF WEEK */}
         <div className='grid grid-cols-7'>
           {days.map((day, i) => {
             return (
@@ -87,14 +102,19 @@ export function Calendar(): JSX.Element {
             )
           })}
         </div>
+        {/* CALENDAR DAYS */}
         <div className='w-full grid grid-cols-7'>
           {arrayOfDate.map(({ date, currentMonth, today }, i) => {
             return (
               <div key={i} className='h-14 border-t grid place-content-center text-sm '>
-                <h1 className={cn(
-                  currentMonth ? 'text-gray-950' : 'opacity-0',
-                  today ? 'bg-blue-500 text-white' : '',
-                  'h-10 w-10 grid place-content-center rounded-full hover:bg-blue-800 hover:text-white transition-all cursor-pointer')}>
+                <h1
+                  className={cn(
+                    selectedItems === i ? 'bg-blue-800 text-white' : '',
+                    currentMonth ? 'text-gray-950' : 'opacity-0',
+                    today ? 'bg-blue-500 text-white' : '',
+                    'h-10 w-10 grid place-content-center rounded-full hover:bg-blue-800 hover:text-white transition-all cursor-pointer')}
+                  onClick={() => handleClick(i)}
+                >
                   {date.date()}
                 </h1>
               </div>
