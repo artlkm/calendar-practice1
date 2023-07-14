@@ -9,8 +9,13 @@ interface arrayOfDate {
 }
 
 interface Props {
-  onChange: (x: string) => void;
+  onChange: (value: string) => void;
   value?: string;
+}
+
+interface SelectedDate {
+  index: number | null;
+  day: number | null;
 }
 
 const months = [
@@ -21,14 +26,17 @@ const months = [
 export function Calendar({ onChange }: Props): JSX.Element {
   const [month, setMonth] = useState(dayjs().month())
   const [year, setYear] = useState(dayjs().year()) // 2023
-  const [selectedItems, setSelectedItem] = useState<number | null>(null)
+  const [selectedDate, setSelectedDate] = useState<SelectedDate>({
+    index: null,
+    day: null,
+  })
 
   useEffect(() => {
-    onChange(`Current data: ${dayjs().format('YYYY-MM-DD')} | Selected Month: ${months[month]}`)
-  }, [month])
+    onChange(`${dayjs().format(`${year}-${month + 1}-${selectedDate.day ?? dayjs().format('DD')}`)}`)
+  }, [selectedDate])
 
-  const handleClick = (index: number) => {
-    setSelectedItem(index)
+  const handleClick = (index: number, day: number) => {
+    setSelectedDate({ index, day })
   }
 
   if (month === 12) {
@@ -88,11 +96,12 @@ export function Calendar({ onChange }: Props): JSX.Element {
     arrayOfDate.push({ date: firstDateOfMonth.date(i), currentMonth: false });
   }
 
+
   return (
     <div className='flex w-1/2 mx-auto  h-screen justify-center items-center  flex-col'>
       <div className='flex w-96 justify-between items-center space-x-8 border-b pb-3'>
         <button onClick={onPrevMonth} className='h-10 w-10 grid place-content-center rounded-full hover:bg-blue-500 hover:text-white transition-all cursor-pointer'>&lt;</button>
-        <h3>{months[month]}</h3>
+        <h3>{year} {months[month]}</h3>
         <button onClick={onNextMonth} className='h-10 w-10 grid place-content-center rounded-full hover:bg-blue-500 hover:text-white transition-all cursor-pointer'>&gt;</button>
       </div>
       <div className='w-96 h-96 '>
@@ -111,11 +120,11 @@ export function Calendar({ onChange }: Props): JSX.Element {
               <div key={i} className='h-14 border-t grid place-content-center text-sm '>
                 <h1
                   className={cn(
-                    selectedItems === i ? 'bg-blue-800 text-white' : '',
-                    currentMonth ? 'text-gray-950' : 'opacity-0',
+                    selectedDate === i ? 'bg-blue-800 text-white' : '',
+                    currentMonth ? 'text-gray-950' : 'opacity-20',
                     today ? 'bg-blue-500 text-white' : '',
                     'h-10 w-10 grid place-content-center rounded-full hover:bg-blue-800 hover:text-white transition-all cursor-pointer')}
-                  onClick={() => handleClick(i)}
+                  onClick={() => handleClick(i, date.$D)}
                 >
                   {date.date()}
                 </h1>
