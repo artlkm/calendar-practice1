@@ -35,14 +35,26 @@ export function Calendar({ onChange }: Props): JSX.Element {
     day: null,
   })
 
+  console.log('selectedDate: ', selectedDate);
+
+  console.log('month: ', month);
+
+
+
   useEffect(() => {
     onChange(`${dayjs().format(`${selectedDate.year}-${(selectedDate.monthCurr) <= 9 ? '0' : ''}${selectedDate.monthCurr}-${selectedDate.day ?? dayjs().format('DD')}`)}`)
   }, [selectedDate])
 
-  const handleClick = (index: number, year: number, monthCurr: number, day: number) => {
-    if (monthCurr === (month + 1)) {
-      setSelectedDate({ index, year, monthCurr, day })
-    }
+  const handleClick = (index: number, year: number, monthCurr: number, day: number, e) => {
+    setMonth(monthCurr - 1)
+    setSelectedDate({ index, year, monthCurr, day: +(e.target.innerText) })
+    console.log('day: ', day);
+
+    console.log('e', e.target.innerText);
+
+    // if (monthCurr === (month + 1)) {
+    //   setSelectedDate({ index, year, monthCurr, day })
+    // }
   }
 
   if (month === 12) {
@@ -122,15 +134,19 @@ export function Calendar({ onChange }: Props): JSX.Element {
         {/* CALENDAR DAYS */}
         <div className='w-full grid grid-cols-7'>
           {arrayOfDate.map(({ date, currentMonth, today }, i) => {
+            console.log('dateArr: ', date);
+            console.log('currentMonth: ', currentMonth);
+
+
             return (
               <div key={i} className='h-14 border-t grid place-content-center text-sm '>
                 <h1
                   className={cn(
-                    selectedDate.index === i && selectedDate.monthCurr === month + 1 ? 'bg-blue-800 text-white' : '',
+                    selectedDate.day === date.$D && selectedDate.monthCurr === month + 1 && currentMonth ? 'bg-blue-800 text-white' : '',
                     currentMonth ? 'text-gray-950' : 'opacity-20',
                     today ? 'bg-blue-500 text-white' : '',
                     'h-10 w-10 grid place-content-center rounded-full hover:bg-blue-800 hover:text-white transition-all cursor-pointer')}
-                  onClick={() => handleClick(i, date.$y, date.$M + 1, date.$D)}
+                  onClick={(e) => handleClick(i, date.$y, date.$M + 1, date.$D, e)}
                 >
                   {date.date()}
                 </h1>
