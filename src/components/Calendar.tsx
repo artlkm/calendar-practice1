@@ -14,12 +14,12 @@ interface Props {
   value?: string;
 }
 
-interface SelectedDate {
-  index: number | null;
-  year: number | null;
-  monthCurr: number | null;
-  day: number | null;
-}
+// interface SelectedDate {
+//   index: number | null;
+//   year: number | null;
+//   monthCurr: number | null;
+//   day: number | null;
+// }
 
 const months = [
   "January", "February", "March", "April", "May", "June", "July",
@@ -29,28 +29,14 @@ const months = [
 export function Calendar({ onChange }: Props): JSX.Element {
   const [month, setMonth] = useState(dayjs().month())
   const [year, setYear] = useState(dayjs().year()) // 2023
-  const [selectedDate, setSelectedDate] = useState<Date>({
-    index: null,
-    year: year,
-    monthCurr: month + 1,
-    day: null,
-  })
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
-  console.log('selectedDate: ', selectedDate);
-
-  // console.log('month: ', month);
+  // Tempororary commented no need for now
   useEffect(() => {
     onChange(`${dayjs()
-      .format(`${selectedDate.year as number}-${(selectedDate.monthCurr as number) <= 9 ? '0' : ''}${selectedDate.monthCurr as number}-${selectedDate.day ?? dayjs().format('DD')}`)}`)
+      .format(`${dayjs(selectedDate).get('year')}-${(dayjs(selectedDate).get('month')) <= 9 ? '0' : ''}${dayjs(selectedDate).get('month')}-${dayjs(selectedDate).get('day')}`)}`)
   }, [selectedDate])
 
-  const handleClick = (date: Date) => {
-    setMonth(monthCurr - 1)
-    setSelectedDate({ index, year, monthCurr, day })
-    // console.log('HandleSelectedDate: ', { index, year, monthCurr, day });
-    // console.log('day: ', day);
-
-  }
 
   if (month === 12) {
     setMonth(0)
@@ -70,12 +56,11 @@ export function Calendar({ onChange }: Props): JSX.Element {
     setMonth(prev => prev + 1)
   }
 
+  // Calculating Calendar UI
   const firstDateOfMonth = dayjs().year(year).month(month).startOf('month');
   const lastDateOfMonth = dayjs().year(year).month(month).endOf('month');
   const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
-
   const arrayOfDate: arrayOfDate[] = [];
-
 
   // create prefix date, they'll be hidden
   for (let i = 0; i < firstDateOfMonth.day(); i++) {
@@ -95,7 +80,6 @@ export function Calendar({ onChange }: Props): JSX.Element {
     });
   }
 
-
   // remaining days of the prev month and next
   // there is bug with it
   const remaining = 42 - arrayOfDate.length;
@@ -105,9 +89,8 @@ export function Calendar({ onChange }: Props): JSX.Element {
     i <= lastDateOfMonth.date() + remaining;
     i++
   ) {
-    arrayOfDate.push({ date: firstDateOfMonth.date(i), currentMonth: false });
+    arrayOfDate.push({ date: firstDateOfMonth.date(i).toDate(), currentMonth: false });
   }
-
 
   return (
     <div className='flex w-1/2 mx-auto  h-screen justify-center items-center  flex-col'>
@@ -142,11 +125,11 @@ export function Calendar({ onChange }: Props): JSX.Element {
               <div key={i} className='h-14 border-t grid place-content-center text-sm '>
                 <h1
                   className={cn(
-                    selectedDate === date ? 'bg-blue-800 text-white' : '',
+                    selectedDate?.valueOf() === date.valueOf() ? 'bg-blue-800 text-white' : '', // NOTE: .valueOf() converts Date to mls number
                     currentMonth ? 'text-gray-950' : 'opacity-20',
                     today ? 'bg-blue-500 text-white' : '',
                     'h-10 w-10 grid place-content-center rounded-full hover:bg-blue-800 hover:text-white transition-all cursor-pointer')}
-                  onClick={() => handleClick(date)}
+                  onClick={() => setSelectedDate(date)}
                 >
                   {dayjsObj.date()}
                 </h1>
@@ -154,7 +137,10 @@ export function Calendar({ onChange }: Props): JSX.Element {
             )
           })}
         </div>
+        <div>
+          <button onClick={() => setMonth(dayjs().month())} type='button'>Back to present Month</button>
+        </div>
       </div>
-    </div>
+    </div >
   )
 }
