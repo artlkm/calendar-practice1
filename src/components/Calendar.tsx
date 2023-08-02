@@ -23,29 +23,25 @@ export function Calendar({ onChange }: Props): JSX.Element {
   const [year, setYear] = useState(dayjs().year()) // 2023
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
-  // Tempororary commented no need for now
   useEffect(() => {
     onChange(`${dayjs()
       .format(`${dayjs(selectedDate).get('year')}-${(dayjs(selectedDate).get('month')) <= 9 ? '0' : ''}${dayjs(selectedDate).get('month')}-${dayjs(selectedDate).get('day')}`)}`)
   }, [selectedDate])
 
-
-  if (month === 12) {
-    setMonth(0)
-    setYear(prev => prev + 1)
-  }
-
-  if (month === -1) {
-    setMonth(11)
-    setYear(prev => prev - 1)
-  }
-
   function onPrevMonth() {
     setMonth(prev => prev - 1)
+    if (month === 0) {
+      setYear(prev => prev - 1)
+      setMonth(11)
+    }
   }
 
   function onNextMonth() {
     setMonth(prev => prev + 1)
+    if (month === 11) {
+      setMonth(0)
+      setYear(prev => prev + 1)
+    }
   }
 
   // Calculating Calendar UI
