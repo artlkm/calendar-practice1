@@ -4,7 +4,6 @@ import cn from '../utils/cn';
 
 interface arrayOfDate {
   currentMonth: boolean;
-  // dayjsObj: ReturnType<typeof dayjs>
   date: Date
   today?: boolean;
 }
@@ -13,13 +12,6 @@ interface Props {
   onChange: (value: string) => void;
   value?: string;
 }
-
-// interface SelectedDate {
-//   index: number | null;
-//   year: number | null;
-//   monthCurr: number | null;
-//   day: number | null;
-// }
 
 const months = [
   "January", "February", "March", "April", "May", "June", "July",
