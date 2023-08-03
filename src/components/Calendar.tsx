@@ -29,18 +29,20 @@ export function Calendar({ onChange }: Props): JSX.Element {
   }, [selectedDate])
 
   function onPrevMonth() {
-    setMonth(prev => prev - 1)
     if (month === 0) {
       setYear(prev => prev - 1)
       setMonth(11)
+    } else {
+      setMonth(prev => prev - 1)
     }
   }
 
   function onNextMonth() {
-    setMonth(prev => prev + 1)
     if (month === 11) {
       setMonth(0)
       setYear(prev => prev + 1)
+    } else {
+      setMonth(prev => prev + 1)
     }
   }
 
