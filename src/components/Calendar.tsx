@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import cn from '../utils/cn';
 
