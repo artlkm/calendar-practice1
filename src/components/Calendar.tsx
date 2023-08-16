@@ -8,8 +8,15 @@ interface arrayOfDate {
   today?: boolean;
 }
 
+interface DisabledDates {
+  date?: string,
+  from?: string,
+  till?: string,
+}
+
 interface Props {
   onChange: (value: string) => void;
+  disabledDates?: DisabledDates[];
   value?: string;
 }
 
@@ -18,7 +25,41 @@ const months = [
   "August", "September", "October", "November", "December"
 ]
 
-export function Calendar({ onChange }: Props): JSX.Element {
+function formatingDate(date: string): Date {
+  return new Date(date)
+}
+
+function returningDisableDates(disabledDates: any, sourceDate: any): boolean {
+  let isOneDate = false
+  let isDateFromTill = false
+  let isFrom = false
+  let isTill = false
+
+  disabledDates.map(date => {
+    if (date?.date) {
+      dayjs(date.date).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD') ? isOneDate = true : false
+    } else if (date?.from && date?.till) {
+      if (dayjs(date.from).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD'))
+        isDateFromTill = true
+      if (dayjs(date.till).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD'))
+        isDateFromTill = false
+      return isDateFromTill
+    } else if (date?.from) {
+      if (dayjs(date.from).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD'))
+        isFrom = true
+      return isFrom
+
+    } else if (date?.till) {
+      if (dayjs(date.till).format('YYYY-MM-DD') !== dayjs(sourceDate).format('YYYY-MM-DD'))
+        isTill = true
+      return isTill
+    }
+  })
+
+  return isOneDate || isDateFromTill || isFrom || isTill
+}
+
+export function Calendar({ onChange, disabledDates }: Props): JSX.Element {
   const [month, setMonth] = useState(dayjs().month())
   const [year, setYear] = useState(dayjs().year()) // 2023
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
@@ -110,15 +151,19 @@ export function Calendar({ onChange }: Props): JSX.Element {
         <div className='w-full grid grid-cols-7'>
           {arrayOfDate.map(({ date, currentMonth, today }, i) => {
             const dayjsObj = dayjs(date);
+            const disabledDate = returningDisableDates(disabledDates, date)
 
             return (
               <div key={i} className='h-14 border-t grid place-content-center text-sm '>
                 <h1
                   className={cn(
                     selectedDate?.valueOf() === date.valueOf() ? 'bg-blue-800 text-white' : '', // NOTE: .valueOf() converts Date to mls number
-                    currentMonth ? 'text-gray-950' : 'opacity-20',
+                    currentMonth ? 'text-gray-950' : 'opacity-20', // opacity-20 is disabled date
                     today ? 'bg-blue-500 text-white' : '',
-                    'h-10 w-10 grid place-content-center rounded-full hover:bg-blue-800 hover:text-white transition-all cursor-pointer')}
+                    'h-10 w-10 grid place-content-center rounded-full hover:bg-blue-800 hover:text-white transition-all cursor-pointer',
+                    disabledDate ? 'opacity-20' : '',
+
+                  )}
                   onClick={() => setSelectedDate(date)}
                 >
                   {dayjsObj.date()}
