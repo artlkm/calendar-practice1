@@ -39,20 +39,15 @@ function returningDisableDates(disabledDates: any, sourceDate: any): boolean {
     if (date?.date) {
       dayjs(date.date).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD') ? isOneDate = true : false
     } else if (date?.from && date?.till) {
-      if (dayjs(date.from).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD'))
+      if (dayjs(date.from).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD')) {
         isDateFromTill = true
-      if (dayjs(date.till).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD'))
+      } else if (dayjs(date.till).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD')) {
         isDateFromTill = false
-      return isDateFromTill
+      }
     } else if (date?.from) {
-      if (dayjs(date.from).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD'))
-        isFrom = true
-      return isFrom
-
+      dayjs(date.from).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD') ? isFrom = true : isFrom = false
     } else if (date?.till) {
-      if (dayjs(date.till).format('YYYY-MM-DD') !== dayjs(sourceDate).format('YYYY-MM-DD'))
-        isTill = true
-      return isTill
+      dayjs(date.till).format('YYYY-MM-DD') !== dayjs(sourceDate).format('YYYY-MM-DD') ? isTill = true : isTill = false
     }
   })
 
@@ -162,7 +157,6 @@ export function Calendar({ onChange, disabledDates }: Props): JSX.Element {
                     today ? 'bg-blue-500 text-white' : '',
                     'h-10 w-10 grid place-content-center rounded-full hover:bg-blue-800 hover:text-white transition-all cursor-pointer',
                     disabledDate ? 'opacity-20' : '',
-
                   )}
                   onClick={() => setSelectedDate(date)}
                 >
