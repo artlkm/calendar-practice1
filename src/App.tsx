@@ -46,8 +46,8 @@ function App() {
 
           // if only from or till is specified,
           // all dates before / after this date should be disabled
-          // { till: '2023-08-05' },
-          // { from: '2023-08-25' },
+          { till: '2023-08-04' },
+          { from: '2023-08-25' },
         ]
       }
     />

@@ -63,15 +63,15 @@ function returningDisableDates(disabledDates: DisabledDates[], sourceDate: Date)
         isDateFromTill = false
 
     } else if (date?.from && !date?.till) {
-      if (new Date(dayjs(date?.from).format('YYYY-MM-DD')).valueOf() >= new Date(dayjs(sourceDate).format('YYYY-MM-DD')).valueOf())
-        isFrom = false
-      else
+      if (new Date(dayjs(date?.from).format('YYYY-MM-DD')).valueOf() <= new Date(dayjs(sourceDate).format('YYYY-MM-DD')).valueOf())
         isFrom = true
-    } else if (date?.till && !date?.from) {
-      if (new Date(dayjs(date?.till).format('YYYY-MM-DD')).valueOf() <= new Date(dayjs(sourceDate).format('YYYY-MM-DD')).valueOf())
-        isTill = false
       else
+        isFrom = false
+    } else if (date?.till && !date?.from) {
+      if (new Date(dayjs(date?.till).format('YYYY-MM-DD')).valueOf() >= new Date(dayjs(sourceDate).format('YYYY-MM-DD')).valueOf())
         isTill = true
+      else
+        isTill = false
     }
   })
 
