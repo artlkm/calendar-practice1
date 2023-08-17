@@ -25,11 +25,8 @@ const months = [
   "August", "September", "October", "November", "December"
 ]
 
-function formatingDate(date: string): Date {
-  return new Date(date)
-}
 
-function returningDisableDates(disabledDates: any, sourceDate: any): boolean {
+function returningDisableDates(disabledDates: DisabledDates[], sourceDate: Date) {
   let isOneDate = false
   let isDateFromTill = false
   let isFrom = false
@@ -146,7 +143,7 @@ export function Calendar({ onChange, disabledDates }: Props): JSX.Element {
         <div className='w-full grid grid-cols-7'>
           {arrayOfDate.map(({ date, currentMonth, today }, i) => {
             const dayjsObj = dayjs(date);
-            const disabledDate = returningDisableDates(disabledDates, date)
+            const disabledDate = returningDisableDates(disabledDates!, date)
 
             return (
               <div key={i} className='h-14 border-t grid place-content-center text-sm '>
