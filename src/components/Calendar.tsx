@@ -51,16 +51,17 @@ function returningDisableDates(disabledDates: DisabledDates[], sourceDate: Date)
     } else if (date?.from && date?.till) {
       if (
         new Date(dayjs(date?.from).format('YYYY-MM-DD')).valueOf()
-        >=
-        new Date(dayjs(sourceDate).format('YYYY-MM-DD')).valueOf()
-        ||
-        new Date(dayjs(date?.till).format('YYYY-MM-DD')).valueOf()
         <=
         new Date(dayjs(sourceDate).format('YYYY-MM-DD')).valueOf()
+        &&
+        new Date(dayjs(date?.till).format('YYYY-MM-DD')).valueOf()
+        >=
+        new Date(dayjs(sourceDate).format('YYYY-MM-DD')).valueOf()
       )
-        isDateFromTill = false
-      else
         isDateFromTill = true
+      else
+        isDateFromTill = false
+
     } else if (date?.from && !date?.till) {
       if (new Date(dayjs(date?.from).format('YYYY-MM-DD')).valueOf() >= new Date(dayjs(sourceDate).format('YYYY-MM-DD')).valueOf())
         isFrom = false
