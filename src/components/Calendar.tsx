@@ -26,6 +26,7 @@ const months = [
 ]
 
 
+
 function returningDisableDates(disabledDates: DisabledDates[], sourceDate: Date) {
   let isOneDate = false
   let isDateFromTill = false
@@ -33,18 +34,43 @@ function returningDisableDates(disabledDates: DisabledDates[], sourceDate: Date)
   let isTill = false
 
   disabledDates.map(date => {
+
+    /**
+     *  LOG
+     */
+    // if (date?.till)
+    // console.log('date: ', new Date(dayjs(date?.till).format('YYYY-MM-DD')).valueOf(), new Date(dayjs(sourceDate).format('YYYY-MM-DD')).valueOf());
+    // if (date?.from && date?.till)
+    // console.log('date?.from && date?.till: ', date?.from && date?.till);
+    /**
+     * 
+     */
+
     if (date?.date) {
       dayjs(date.date).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD') ? isOneDate = true : false
     } else if (date?.from && date?.till) {
-      if (dayjs(date.from).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD')) {
-        isDateFromTill = true
-      } else if (dayjs(date.till).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD')) {
+      if (
+        new Date(dayjs(date?.from).format('YYYY-MM-DD')).valueOf()
+        >=
+        new Date(dayjs(sourceDate).format('YYYY-MM-DD')).valueOf()
+        ||
+        new Date(dayjs(date?.till).format('YYYY-MM-DD')).valueOf()
+        <=
+        new Date(dayjs(sourceDate).format('YYYY-MM-DD')).valueOf()
+      )
         isDateFromTill = false
-      }
-    } else if (date?.from) {
-      dayjs(date.from).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD') ? isFrom = true : isFrom = false
-    } else if (date?.till) {
-      dayjs(date.till).format('YYYY-MM-DD') !== dayjs(sourceDate).format('YYYY-MM-DD') ? isTill = true : isTill = false
+      else
+        isDateFromTill = true
+    } else if (date?.from && !date?.till) {
+      if (new Date(dayjs(date?.from).format('YYYY-MM-DD')).valueOf() >= new Date(dayjs(sourceDate).format('YYYY-MM-DD')).valueOf())
+        isFrom = false
+      else
+        isFrom = true
+    } else if (date?.till && !date?.from) {
+      if (new Date(dayjs(date?.till).format('YYYY-MM-DD')).valueOf() <= new Date(dayjs(sourceDate).format('YYYY-MM-DD')).valueOf())
+        isTill = false
+      else
+        isTill = true
     }
   })
 

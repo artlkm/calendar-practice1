@@ -34,7 +34,22 @@ function App() {
     <Calendar
       value={dataString}
       onChange={setDateString}
-      disabledDates={[{ date: '2023-08-19' },]}
+      disabledDates={
+        [
+          // specific date
+          // { date: '2023-08-19' },
+          // { date: '2023-08-18' },
+          // { date: '2023-08-20' },
+
+          // a time period with a start and end
+          { from: '2023-08-07', till: '2023-08-10' },
+
+          // if only from or till is specified,
+          // all dates before / after this date should be disabled
+          // { till: '2023-08-05' },
+          // { from: '2023-08-25' },
+        ]
+      }
     />
   )
 }
