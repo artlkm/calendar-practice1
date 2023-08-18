@@ -7,23 +7,6 @@ import timezone from 'dayjs/plugin/timezone'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-// TEMPORARY NOTE
-{/* <Calendar
-  value={value}
-  onChange={onChange}
-  disabledDates={[
-    // specific date
-    { date: '2023-08-04' }, 
-
-    // a time period with a start and end
-    { from: '2023-08-07', till: '2023-08-08' },
-
-    // if only from or till is specified,
-    // all dates before / after this date should be disabled
-    { till: '2023-07-31' },
-    { from: '2023-09-01' },
-  ]}
-/> */}
 
 function App() {
   const [dataString, setDateString] = useState<`${string}-${string}-${string}`>(`${dayjs().year()}-${dayjs().format('MM')}-${dayjs().format('DD')}`)
@@ -43,11 +26,14 @@ function App() {
 
           // a time period with a start and end
           { from: '2023-08-07', till: '2023-08-10' },
+          { from: '2023-08-12', till: '2023-08-14' },
 
           // if only from or till is specified,
           // all dates before / after this date should be disabled
-          { till: '2023-08-04' },
-          { from: '2023-08-25' },
+          // { till: '2023-08-04' },
+          // { till: '2023-08-06' },
+          // { from: '2023-08-25' },
+          // { from: '2023-08-10' },
           // { from: '2023-09-05' },
         ]
       }
