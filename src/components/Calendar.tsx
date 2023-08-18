@@ -28,18 +28,11 @@ const months = [
 
 
 function returningDisableDates(disabledDates: DisabledDates[], sourceDate: Date) {
-  const disabledFromTillArray: [key: string][] = []
-
   let isOneDate = false
   let isDateFromTill = false
   let isFrom = false
   let isTill = false
 
-
-  disabledDates.map(({ from, till }) => disabledFromTillArray.push({ from, till }))
-
-  console.log(disabledFromTillArray);
-  console.log('Repeat');
 
   disabledDates.map(date => {
     const dateFrom = new Date(dayjs(date?.from).format('YYYY-MM-DD')).valueOf()
@@ -53,7 +46,6 @@ function returningDisableDates(disabledDates: DisabledDates[], sourceDate: Date)
         isDateFromTill = true
       else
         isDateFromTill = false
-      console.log(isDateFromTill);
     } else if (date?.from && !date?.till) {
       if (dateFrom <= dateSource)
         isFrom = true
