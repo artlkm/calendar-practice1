@@ -28,10 +28,44 @@ const months = [
 
 
 function returningDisableDates(disabledDates: DisabledDates[], sourceDate: Date) {
+  // REINIS IMPLEMENTATION
+
+  // for (const date of disabledDates) {
+  //   const dateFrom = new Date(dayjs(date?.from).format('YYYY-MM-DD')).valueOf()
+  //   const dateTill = new Date(dayjs(date?.till).format('YYYY-MM-DD')).valueOf()
+  //   const dateSource = new Date(dayjs(sourceDate).format('YYYY-MM-DD')).valueOf()
+
+  //   if (date?.date) {
+  //     if (dayjs(date.date).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD'))
+  //       return true
+  //   } else if (date?.from && date?.till) {
+  //     if (dateFrom <= dateSource && dateTill >= dateSource)
+  //       return true
+  //   } else if (date?.from && !date?.till) {
+  //     if (dateFrom <= dateSource)
+  //       return true
+  //   } else if (date?.till && !date?.from) {
+  //     if (dateTill >= dateSource)
+  //       return true
+  //   }
+  // }
+  // return false
+
+
   let isOneDate = false
   let isDateFromTill = false
   let isFrom = false
   let isTill = false
+
+  const datesFromTillArray: [key: string][] = []
+  let indexFromTill = 0
+
+  disabledDates.forEach(({ from, till }) => {
+    if (from && till)
+      datesFromTillArray.push({ from, till })
+  })
+
+  console.log('datesFromTillArray:', datesFromTillArray);
 
 
   disabledDates.map(date => {
@@ -39,13 +73,18 @@ function returningDisableDates(disabledDates: DisabledDates[], sourceDate: Date)
     const dateTill = new Date(dayjs(date?.till).format('YYYY-MM-DD')).valueOf()
     const dateSource = new Date(dayjs(sourceDate).format('YYYY-MM-DD')).valueOf()
 
+    const dateFromArray = new Date(dayjs(datesFromTillArray[indexFromTill]?.from).format('YYYY-MM-DD')).valueOf()
+    const dateTillArray = new Date(dayjs(datesFromTillArray[indexFromTill]?.till).format('YYYY-MM-DD')).valueOf()
+
     if (date?.date) {
       dayjs(date.date).format('YYYY-MM-DD') === dayjs(sourceDate).format('YYYY-MM-DD') ? isOneDate = true : false
-    } else if (date?.from && date?.till) {
-      if (dateFrom <= dateSource && dateTill >= dateSource)
+    } else if (datesFromTillArray.length > 0 && date?.from && date?.till) {
+      if (dateFromArray <= dateSource && dateTillArray >= dateSource) {
         isDateFromTill = true
-      else
+      } else {
         isDateFromTill = false
+        indexFromTill += 1
+      }
     } else if (date?.from && !date?.till) {
       if (dateFrom <= dateSource)
         isFrom = true

@@ -20,9 +20,9 @@ function App() {
       disabledDates={
         [
           // specific date
-          // { date: '2023-08-19' },
+          { date: '2023-08-19' },
           // { date: '2023-08-18' },
-          // { date: '2023-08-20' },
+          { date: '2023-08-20' },
 
           // a time period with a start and end
           { from: '2023-08-07', till: '2023-08-10' },
@@ -30,9 +30,9 @@ function App() {
 
           // if only from or till is specified,
           // all dates before / after this date should be disabled
-          // { till: '2023-08-04' },
+          { till: '2023-08-04' },
           // { till: '2023-08-06' },
-          // { from: '2023-08-25' },
+          { from: '2023-08-25' },
           // { from: '2023-08-10' },
           // { from: '2023-09-05' },
         ]
