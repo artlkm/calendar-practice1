@@ -1,5 +1,3 @@
-// import dayjs from 'dayjs';
-
 const dayjs = require('dayjs');
 
 interface DisabledDates {
@@ -35,5 +33,3 @@ export default function returningDisableDates(
   }
   return false;
 }
-
-// module.exports = returningDisableDates;
