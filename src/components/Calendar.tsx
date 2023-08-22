@@ -25,8 +25,6 @@ const months = [
   "August", "September", "October", "November", "December"
 ]
 
-
-
 function returningDisableDates(disabledDates: DisabledDates[], sourceDate: Date) {
   // REINIS IMPLEMENTATION
 
@@ -65,7 +63,6 @@ function returningDisableDates(disabledDates: DisabledDates[], sourceDate: Date)
       datesFromTillArray.push({ from, till })
   })
 
-  console.log('datesFromTillArray:', datesFromTillArray);
 
 
   disabledDates.map(date => {
